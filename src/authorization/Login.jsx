@@ -50,7 +50,7 @@ function LoginForm() {
     };
     
     if (token && user) {
-        return user.role === "admin" ? <Navigate to="/productsAdmin" /> : <Navigate to="/productUsers" />;
+        return user.role === "admin" ? <Navigate to="/admin-products" /> : <Navigate to="/productUsers" />;
     }
 
     return (

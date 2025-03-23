@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, Link } from "react-ro
 import { useNavigate } from 'react-router-dom';
 import LoginForm from './Login';
 import SignupForm from './Signup';
+import './Authorization.css' 
 
 const url = "http://127.0.0.1:5000";
 
