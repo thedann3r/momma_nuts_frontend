@@ -1,6 +1,6 @@
 import UProductItem from "./UProductItem";
 
-function UProductList({ product, setProduct }) {
+function UProductList({ product = [], setProduct }) {
     return (
         <div id="container">
             {product.length > 0 ? product.map(prod => (

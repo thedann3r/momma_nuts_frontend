@@ -1,6 +1,6 @@
 import AProductItem from "./AProductItem";
 
-function AProductList({ product, setProduct }) {
+function AProductList({ product = [], setProduct }) {
     return (
         <div id="container">
             {product.length > 0 ? product.map(prod => (

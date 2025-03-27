@@ -1,25 +1,17 @@
-import React, { useEffect, useState } from "react";
-import './UProduct.css'
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import UProductList from "./UProductList";
 
 const url = "http://127.0.0.1:5000";
 
 function UProduct() {
     const [product, setProduct] = useState([]);
-    const token = localStorage.getItem("access_token");
 
     useEffect(() => {
-        if (!token) {
-            console.error("No token found. User might not be logged in.");
-            return;
-        }
-
-        fetch(`${url}/products`, {
-            headers: { Authorization: `Bearer ${token}` }
-        })
+        fetch(`${url}/products`)
         .then((res) => {
             if (!res.ok) {
-                throw new Error("Unauthorized or failed to fetch products");
+                throw new Error("Failed to fetch products");
             }
             return res.json();
         })
@@ -27,7 +19,7 @@ function UProduct() {
             setProduct(Array.isArray(data) ? data : []);
         })
         .catch((err) => console.error("Error fetching products:", err));
-    }, [token]);
+    }, []);
 
     return (
         <>
