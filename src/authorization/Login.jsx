@@ -16,8 +16,7 @@ function LoginForm() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    name: formData.get('name'),
-                    email: formData.get('email'),
+                    identifier: formData.get('identifier'), // Either phone or email
                     password: formData.get('password')
                 }),
             });
@@ -34,6 +33,7 @@ function LoginForm() {
                 id: data.user.id,
                 name: data.user.name,
                 email: data.user.email,
+                phone: data.user.phone,
                 role: data.role
             }));
     
@@ -57,15 +57,14 @@ function LoginForm() {
         <div className="signupContainer">
             <div className="signupCard">
                 <div className="signupLeft">
-                    <div className="signupImagePlaceholder">
+                    {/* <div className="signupImagePlaceholder">
                         <img src="https://cdn.create.vista.com/api/media/small/426382906/stock-photo-hostel-dormitory-beds-arranged-in-room" alt="signup" />
-                    </div>
+                    </div> */}
                 </div>
                 <div className="signupRight">
                     <h2>Log in to your account</h2>
                     <form className="signupForm" onSubmit={handleLogin}>
-                        <input className="signupInput" type="text" name="name" placeholder="Enter name..." required />
-                        <input className="signupInput" type="email" name="email" placeholder="Enter email..." required />
+                        <input className="signupInput" type="text" name="identifier" placeholder="Enter email or phone..." required />
                         <input className="signupInput" type="password" name="password" placeholder="Enter password..." required />
                         <button className="signupButton" type="submit">Log In</button>
                     </form>
