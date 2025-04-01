@@ -61,7 +61,7 @@ function SignupForm() {
             setUser({ name: data.user.name, role: data.user.role });
             localStorage.setItem("access_token", data.create_token);
 
-            alert(`Welcome ${data.user.name}, your account has been created as a ${data.user.role || 'user'}.`);
+            alert(`Welcome ${data.user.name}, your account has been created successfully.`);
         })
         .catch((error) => {
             console.error("Signup error:", error);

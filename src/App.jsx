@@ -12,6 +12,7 @@ import Payment from "./payments/Payments"
 import CartPage from "./cart/Cart"
 import Mpesa from "./mpesa/Mpesa"
 import Profile from "./profile/Profile"
+import Logout from "./authorization/Logout"
 
 function App(){
   return(
@@ -28,6 +29,7 @@ function App(){
         <Route path="/cart" element={<CartPage />} />
         <Route path="/mpesa" element={<Mpesa />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/logout" element={<Logout />} />
       </Routes>
     </Router>
   )
