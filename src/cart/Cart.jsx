@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./cart.css"
 
 const url = "http://127.0.0.1:5000";
 
@@ -57,10 +58,13 @@ function CartPage() {
       )
       .then((response) => {
         alert("Checkout successful! Proceed to payment.");
-        navigate(`/payment/${response.data.order_id}`);
+        
+        // Pass orderId and amount using state
+        navigate("/mpesa", { state: { orderId: response.data.order_id, amount: response.data.total_amount } });
       })
       .catch((err) => alert(err.response?.data?.error || "Checkout failed"));
   };
+  
 
   return (
     <div className="cart-container">
