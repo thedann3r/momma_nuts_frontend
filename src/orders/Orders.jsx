@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Orders = () => {
@@ -7,6 +7,7 @@ const Orders = () => {
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
   const userRole = localStorage.getItem("role"); // Assuming role is stored in localStorage
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -33,7 +34,7 @@ const Orders = () => {
     }
 
     try {
-      await axios.patch(`http://localhost:5000/orders/${orderId}`, {}, {
+      await axios.patch(`http://127.0.0.1:5000/orders/${orderId}`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
@@ -46,6 +47,11 @@ const Orders = () => {
     } catch (error) {
       console.error("Error canceling order:", error.response?.data || error);
     }
+  };
+
+  const handlePayment = (orderId, amount) => {
+    // Navigate to the payment page with order details
+    navigate("/mpesa", { state: { orderId, amount } });
   };
 
   if (loading) return <p>Loading orders...</p>;
@@ -64,7 +70,17 @@ const Orders = () => {
           <Link to={`/order-items/${order.id}`} className="mt-3 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
             View More
           </Link>
-          
+
+          {/* Pay Now Button for Pending Orders */}
+          {order.status === "pending" && (
+            <button 
+              onClick={() => handlePayment(order.id, order.total_price)}
+              className="ml-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+              Pay Now
+            </button>
+          )}
+
+          {/* Cancel Button for Pending Orders and Admin Role */}
           {(order.status === "pending" || (order.status === "completed" && userRole === "admin")) && (
             <button 
               onClick={() => handleCancelOrder(order.id, order.status)}

@@ -11,6 +11,7 @@ import OrderItems from "./orders/OrderItems"
 import Payment from "./payments/Payments"
 import CartPage from "./cart/Cart"
 import Mpesa from "./mpesa/Mpesa"
+import Profile from "./profile/Profile"
 
 function App(){
   return(
@@ -26,6 +27,7 @@ function App(){
         <Route path="/payments" element={<Payment />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/mpesa" element={<Mpesa />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   )
