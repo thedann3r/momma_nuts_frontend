@@ -24,7 +24,7 @@ function UProduct() {
     return (
         <>
             <h1 className="mainH">Products</h1>
-            <UProductList products={product} setProducts={setProduct} />
+            <UProductList product={product} setProduct={setProduct} />
         </>
     );
 }

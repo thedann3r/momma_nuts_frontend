@@ -1,26 +1,26 @@
 import { useState } from "react";
-import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+// import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 const url = "http://127.0.0.1:5000";
 
-function LocationPicker({ setLatitude, setLongitude }) {
-    useMapEvents({
-        click(e) {
-            setLatitude(e.latlng.lat);
-            setLongitude(e.latlng.lng);
-        },
-    });
-    return null;
-}
+// function LocationPicker({ setLatitude, setLongitude }) {
+//     useMapEvents({
+//         click(e) {
+//             setLatitude(e.latlng.lat);
+//             setLongitude(e.latlng.lng);
+//         },
+//     });
+//     return null;
+// }
 
 function NewAProduct({ products, setProducts }) {
     const [newProduct, setNewProduct] = useState({
         name: "",
         image: "",
         description: "",
-        price: "",
-        stock: "",
+        price: 0,
+        stock: 0
     });
 
     const [uploading, setUploading] = useState(false);
@@ -68,8 +68,14 @@ function NewAProduct({ products, setProducts }) {
         })
             .then((resp) => resp.json())
             .then((newProductData) => {
-                setProducts([...products, newProductData]);
-                setNewProduct({ name: "", image: "", description: "", price: "", stock: "" });
+                setProducts((prevProducts) => [...prevProducts, newProductData]);  // ✅ This ensures proper reactivity
+                setNewProduct({ 
+                    name: "", 
+                    image: "", 
+                    description: "", 
+                    price: 0, 
+                    stock: 0 
+                });
                 alert(`${newProductData.name} created successfully!`);
             })
             .catch((error) => console.log(error));

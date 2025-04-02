@@ -13,7 +13,7 @@ import CartPage from "./cart/Cart"
 import Mpesa from "./mpesa/Mpesa"
 import Profile from "./profile/Profile"
 import Logout from "./authorization/Logout"
-
+  
 function App(){
   return(
     <Router>

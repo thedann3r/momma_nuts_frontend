@@ -46,12 +46,12 @@ function AProductItem({ name, image, id, description, price, stock, setProduct, 
   function handleUpdate(e) {
     e.preventDefault();
     const token = localStorage.getItem("access_token");
-
+  
     if (!token) {
       alert("You must be logged in to update products.");
       return;
     }
-
+  
     fetch(`${url}/products/${id}`, {
       method: "PATCH",
       headers: {
@@ -60,22 +60,27 @@ function AProductItem({ name, image, id, description, price, stock, setProduct, 
       },
       body: JSON.stringify(update)
     })
-      .then(resp => {
-        if (!resp.ok) {
-          throw new Error("Failed to update. Unauthorized or invalid request.");
-        }
-        return resp.json();
-      })
+      .then(resp => resp.json())
       .then((updated) => {
-        let updatedProducts = product.map(prod =>
-          prod.id === id ? { ...prod, ...updated } : prod
+        if (updated.error) {
+          throw new Error(updated.error);  // Handle errors properly
+        }
+  
+        console.log("Updated product:", updated);
+  
+        // ✅ Ensure React recognizes the state change
+        setProduct(prevProducts => 
+          prevProducts.map(prod => 
+            prod.id === id ? updated : prod
+          )
         );
-        setProduct(updatedProducts);
+  
         setUpdate({ name: "", image: "", description: "", price: "", stock: "" });
         alert(`${updated.name} has been updated successfully!`);
       })
       .catch(err => console.error("Error updating product:", err));
   }
+  
 
   function handleDelete() {
     const token = localStorage.getItem("access_token");
