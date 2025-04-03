@@ -6,12 +6,12 @@ const OrderItems = () => {
   const { orderId } = useParams();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("access_token");
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/orders/${orderId}`, {
+        const response = await axios.get(`http://127.0.0.1:5000/orders/${orderId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setOrder(response.data);

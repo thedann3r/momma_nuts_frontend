@@ -13,11 +13,14 @@ function Mpesa() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    console.log("Location State:", location.state); // Debugging
     if (location.state?.amount && location.state?.orderId) {
       setAmount(location.state.amount);
       setOrderId(location.state.orderId);
+    } else {
+      setError("Order ID or amount missing. Please try again.");
     }
-  }, [location.state]);
+  }, [location.state]);  
 
   const handlePhoneChange = (e) => {
     let input = e.target.value;
@@ -46,7 +49,7 @@ function Mpesa() {
 
       // Send Mpesa payment request
       const response = await axios.post(
-        "https://moringa-hostels-backend-ebzd.onrender.com/mpesa/pay",
+        "http://127.0.0.1:5000/mpesa/pay",
         { phone_number: phone, order_id: orderId },
         {
           headers: {

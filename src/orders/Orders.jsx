@@ -5,14 +5,14 @@ import axios from "axios";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("access_token");
   const userRole = localStorage.getItem("role"); // Assuming role is stored in localStorage
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/orders", {
+        const response = await axios.get("http://127.0.0.1:5000/orders", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setOrders(response.data);
