@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+const url = "http://127.0.0.1:5000"
+
 const Payment = () => {
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,7 +13,7 @@ const Payment = () => {
       try {
         const token = localStorage.getItem("access_token");
 
-        const response = await axios.get("http://127.0.0.1:5000/payments", {
+        const response = await axios.get(`${url}/payments`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

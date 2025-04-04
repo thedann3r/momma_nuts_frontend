@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const url = "http://127.0.0.1:5000"
+
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +14,7 @@ const Orders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:5000/orders", {
+        const response = await axios.get(`${url}/orders`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setOrders(response.data);
@@ -34,7 +36,7 @@ const Orders = () => {
     }
 
     try {
-      await axios.patch(`http://127.0.0.1:5000/orders/${orderId}`, {}, {
+      await axios.patch(`${url}/orders/${orderId}`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
       

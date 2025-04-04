@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 
+const url = "http://127.0.0.1:5000"
+
 const OrderItems = () => {
   const { orderId } = useParams();
   const [order, setOrder] = useState(null);
@@ -11,7 +13,7 @@ const OrderItems = () => {
   useEffect(() => {
     const fetchOrderDetails = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:5000/orders/${orderId}`, {
+        const response = await axios.get(`${url}/orders/${orderId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setOrder(response.data);

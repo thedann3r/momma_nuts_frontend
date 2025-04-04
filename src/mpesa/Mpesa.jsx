@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 import "./Mpesa.css";
 
+const url = "http://127.0.0.1:5000"
+
 function Mpesa() {
   const location = useLocation();
   const [phone, setPhone] = useState("254");
@@ -49,7 +51,7 @@ function Mpesa() {
 
       // Send Mpesa payment request
       const response = await axios.post(
-        "http://127.0.0.1:5000/mpesa/pay",
+        `${url}/mpesa/pay`,
         { phone_number: phone, order_id: orderId },
         {
           headers: {

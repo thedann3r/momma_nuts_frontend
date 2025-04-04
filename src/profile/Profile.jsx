@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./profile.css";
 
+const url = "http://127.0.0.1:5000"
+
 function Profile() {
   const [user, setUser] = useState({ name: "", email: "", phone: "", id: "" });
   const [currentPassword, setCurrentPassword] = useState("");
@@ -43,7 +45,7 @@ function Profile() {
 
     console.log("Sending PATCH request with:", requestBody);
 
-    fetch(`http://127.0.0.1:5000/users/${user.id}`, {
+    fetch(`${url}/users/${user.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -78,7 +80,7 @@ function Profile() {
 
     const token = localStorage.getItem("access_token");
 
-    fetch(`http://127.0.0.1:5000/users/${user.id}`, {  // Correct URL for deleting the user
+    fetch(`${url}/users/${user.id}`, {  // Correct URL for deleting the user
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
