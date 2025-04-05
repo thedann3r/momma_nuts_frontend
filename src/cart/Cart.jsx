@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./cart.css"
+import "./cart.css";
 
 const url = "http://127.0.0.1:5000";
 
@@ -35,7 +35,6 @@ function CartPage() {
       .then(() => fetchCart()) // ✅ Refresh cart after update
       .catch((err) => alert(err.response?.data?.error || "Failed to update quantity"));
   };
-  
 
   const removeItem = (cartId) => {
     axios
@@ -51,13 +50,12 @@ function CartPage() {
         alert(err.response?.data?.error || "Failed to remove item");
       });
   };
-  
 
   const handleCheckout = () => {
     axios
       .post(
         `${url}/checkout`,
-        {},
+        {}, // No need to send cart data here, backend will process it
         { headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` } }
       )
       .then((response) => {
@@ -70,7 +68,6 @@ function CartPage() {
       })
       .catch((err) => alert(err.response?.data?.error || "Checkout failed"));
   };
-  
 
   return (
     <div className="cart-container">
@@ -88,13 +85,9 @@ function CartPage() {
                 <p>Price: ${item.price}</p>
                 <p>Quantity: {item.quantity}</p>
                 <div className="cart-controls">
-
-                <button onClick={() => updateQuantity(item.product_id, 1)}>+</button> 
-
-                <button onClick={() => item.quantity > 1 && updateQuantity(item.product_id, -1)}>-</button> 
-
-                <button onClick={() => removeItem(item.product_id)}>Remove</button>
-
+                  <button onClick={() => updateQuantity(item.product_id, 1)}>+</button>
+                  <button onClick={() => item.quantity > 1 && updateQuantity(item.product_id, -1)}>-</button>
+                  <button onClick={() => removeItem(item.id)}>Remove</button>
                 </div>
               </div>
             </div>
