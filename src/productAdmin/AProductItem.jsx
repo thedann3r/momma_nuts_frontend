@@ -114,19 +114,19 @@ function AProductItem({ name, image, id, description, price, stock, setProduct, 
   return (
     <div id="content">
       <h2 className="mini">Name</h2>
-      <p className="cont"><strong>{name}</strong></p>
-      <img className="cont" src={image} alt={name} />
+      <p className="aprod-name"><strong>{name}</strong></p>
+      <img className="aprod-image" src={image} alt={name} />
       <h3 className="mini">Description</h3>
-      <h2 className="cont"><strong>{description}</strong></h2>
+      <h2 className="aprod-description "><strong>{description}</strong></h2>
       <h3 className="mini">Price</h3>
-      <h2 className="cont"><strong>${price}</strong></h2>
+      <h2 className="aprod-price"><strong>${price}</strong></h2>
       <h3 className="mini">Stock</h3>
-      <h2 className="cont"><strong>{stock} available</strong></h2>
+      <h2 className="aprod-stock"><strong>{stock} available</strong></h2>
 
       <form id="new" onSubmit={handleUpdate}>
         <input className="input" type="text" name="name" placeholder="Name" value={update.name} required onChange={handleChange} /><br />
 
-        <input type="file" onChange={handleImageUpload} className="input" accept="image/*" required />
+        <input type="file" onChange={handleImageUpload} className="input" accept="image/*" required /><br />
         {uploading && <p>Uploading...</p>}
         {update.image && <img src={update.image} alt="Uploaded Preview" className="w-32 h-32 mt-2" />}
 

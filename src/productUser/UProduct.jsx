@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import UProductList from "./UProductList";
+import "./UProduct.css"
 
 const url = "http://127.0.0.1:5000";
 

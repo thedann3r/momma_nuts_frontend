@@ -45,7 +45,7 @@ function Profile() {
 
     console.log("Sending PATCH request with:", requestBody);
 
-    fetch(`${url}/users/${user.id}`, {
+    fetch(`${url}/users`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -77,31 +77,33 @@ function Profile() {
     if (!window.confirm("Are you sure you want to delete your account? This action cannot be undone!")) {
       return;
     }
-
+  
     const token = localStorage.getItem("access_token");
-
-    fetch(`${url}/users/${user.id}`, {  // Correct URL for deleting the user
+  
+    fetch(`${url}/delete`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
+      body: JSON.stringify({user_id:user.id}) // optional: include { user_id: user.id } if admin
     })
-      .then((response) => response.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to delete account");
+        return res.json();
+      })
       .then((data) => {
-        if (data.error) {
-          throw new Error(data.error);
-        }
         alert("Account deleted successfully!");
         localStorage.removeItem("user");
         localStorage.removeItem("access_token");
-        navigate("/home");
+        navigate("/login");
       })
       .catch((error) => {
         console.error("Delete error:", error.message);
         alert(error.message || "Something went wrong. Please try again.");
       });
   };
+  
 
   return (
     <div className="profile-container">
@@ -112,21 +114,21 @@ function Profile() {
           type="text"
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
-        />
+        /><br />
 
         <label className="profileLabel">Email: </label><br />
         <input
           type="email"
           value={newEmail}
           onChange={(e) => setNewEmail(e.target.value)}
-        />
+        /><br />
 
         <label className="profileLabel">Phone: </label><br />
         <input
-          type="text"
+          type="number"
           value={newPhone}
           onChange={(e) => setNewPhone(e.target.value)}
-        />
+        /><br />
 
         <label className="profileLabel">Current Password: </label><br />
         <input
@@ -134,14 +136,14 @@ function Profile() {
           required
           value={currentPassword}
           onChange={(e) => setCurrentPassword(e.target.value)}
-        />
+        /><br />
 
         <label className="profileLabel">New Password (optional): </label><br />
         <input
           type="password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
-        />
+        /><br />
         
         <div className="profileButtons">
           <button className="updateProfileBtn" type="submit">Update</button>
