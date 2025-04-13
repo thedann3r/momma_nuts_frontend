@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CommentSection from "../comments/CommentSection";
 
 const url = "http://127.0.0.1:5000";
 
@@ -71,8 +72,7 @@ function UProductItem({ id, name, image, description, price, stock }) {
       {showCommentSection && (
         <div className="comment-section">
           <h3>Comments</h3>
-          {/* CommentSection Component will go here */}
-          {/* Example: <CommentSection productId={id} /> */}
+          <CommentSection productId={id} />
         </div>
       )}
     </div>

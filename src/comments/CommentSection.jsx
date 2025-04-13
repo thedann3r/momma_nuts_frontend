@@ -1,39 +1,48 @@
 import { useEffect, useState } from "react";
 import CommentItem from "./CommentItem";
-import axios from "axios";
 
 function CommentSection({ productId, currentUser }) {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
 
+  const backendUrl = "http://127.0.0.1:5000";  // Your backend URL
+
   useEffect(() => {
-    axios.get(`/api/comments?product_id=${productId}`)
-      .then(res => setComments(res.data))
-      .catch(err => console.error("Failed to fetch comments", err));
+    // Fetch comments for a specific product using the correct URL structure
+    fetch(`${backendUrl}/comments/product/${productId}`)
+      .then((res) => res.json())  // Convert response to JSON
+      .then((data) => setComments(data))  // Set the comments state
+      .catch((err) => console.error("Failed to fetch comments", err));
   }, [productId]);
 
   const handlePostComment = (e) => {
     e.preventDefault();
     if (!newComment.trim()) return;
 
-    axios.post("/api/comments", {
-      content: newComment,
-      product_id: productId
-    }, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    fetch(`${backendUrl}/comments`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        content: newComment,
+        product_id: productId,
+      }),
     })
-      .then(res => {
-        setComments(prev => [...prev, res.data]);
-        setNewComment("");
+      .then((res) => res.json())  // Parse the response as JSON
+      .then((data) => {
+        setComments((prev) => [...prev, data]);  // Add new comment to the list
+        setNewComment("");  // Clear the input field
       })
-      .catch(err => console.error("Failed to post comment", err));
+      .catch((err) => console.error("Failed to post comment", err));
   };
 
   return (
     <div className="flex flex-col max-h-[80vh] relative">
       <div className="overflow-y-auto mb-20 space-y-4">
         {comments.length === 0 && <p className="text-gray-500">No comments yet.</p>}
-        {comments.map(comment => (
+        {comments.map((comment) => (
           <CommentItem
             key={comment.id}
             comment={comment}
@@ -60,4 +69,4 @@ function CommentSection({ productId, currentUser }) {
     </div>
   );
 }
-export default CommentSection
+export default CommentSection;
