@@ -2,8 +2,9 @@ import { useState } from "react";
 
 const url = "http://127.0.0.1:5000";
 
-function UProductItem({ id, name, image, description, price, stock }) { 
+function UProductItem({ id, name, image, description, price, stock }) {
   const [loading, setLoading] = useState(false);
+  const [showCommentSection, setShowCommentSection] = useState(false);  // Track comment section visibility
   const token = localStorage.getItem("access_token");
 
   const handleAddToCart = () => {
@@ -35,6 +36,10 @@ function UProductItem({ id, name, image, description, price, stock }) {
       .finally(() => setLoading(false));
   };
 
+  const toggleCommentSection = () => {
+    setShowCommentSection(prev => !prev);  // Toggle the visibility of the comment section
+  };
+
   return (
     <div className="product-card">
       <img className="product-image" src={image} alt={name} />
@@ -44,15 +49,32 @@ function UProductItem({ id, name, image, description, price, stock }) {
         <h3 className="product-price">Price: ${price}</h3>
         <h3 className="product-stock">Stock: {stock} available</h3>
         <div className="product-buttons">
-          <button 
-            className="add-to-cart-btn" 
+          <button
+            className="add-to-cart-btn"
             onClick={handleAddToCart}
             disabled={loading}
           >
             {loading ? "Adding..." : "Add to Cart"}
           </button>
+          
+          {/* Add comment button */}
+          <button 
+            className="comment-btn"
+            onClick={toggleCommentSection}
+          >
+            {showCommentSection ? "Hide Comments" : "Comment"}
+          </button>
         </div>
       </div>
+
+      {/* Conditionally show the comment section */}
+      {showCommentSection && (
+        <div className="comment-section">
+          <h3>Comments</h3>
+          {/* CommentSection Component will go here */}
+          {/* Example: <CommentSection productId={id} /> */}
+        </div>
+      )}
     </div>
   );
 }
