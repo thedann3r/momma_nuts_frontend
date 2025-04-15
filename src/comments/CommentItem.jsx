@@ -1,66 +1,122 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
-import axios from 'axios';
 import ReplyList from './ReplyList';
 import ReplyForm from './ReplyForm';
 
+const backendUrl = "http://127.0.0.1:5000"; // Adjust if needed
+
 const CommentItem = ({ comment, currentUser }) => {
-  const [liked, setLiked] = useState(comment.liked_by_user);
+  const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(comment.likes?.length || 0);
   const [showReplies, setShowReplies] = useState(false);
   const [replyInputVisible, setReplyInputVisible] = useState(false);
   const [replies, setReplies] = useState(comment.replies || []);
   const [replyContent, setReplyContent] = useState('');
 
-  const handleLikeToggle = async () => {
-    try {
-      if (!liked) {
-        const res = await axios.post(`/likes/${comment.id}`);
-        setLikeCount(prev => prev + 1);
-      } else {
-        await axios.delete(`/likes/${comment.id}`);
-        setLikeCount(prev => prev - 1);
-      }
-      setLiked(!liked);
-    } catch (err) {
-      console.error("Error toggling like:", err);
+  // Fetch initial like status when the component mounts
+  useEffect(() => {
+    if (currentUser) {
+      fetch(`${backendUrl}/comments/${comment.id}/likes`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.liked) {
+            setLiked(true);
+          }
+        })
+        .catch((err) => {
+          console.error("Error fetching like status:", err);
+        });
+    }
+  }, [comment.id, currentUser]);
+
+  const handleLikeToggle = () => {
+    const token = localStorage.getItem("access_token");
+
+    if (!liked) {
+      fetch(`${backendUrl}/comments/${comment.id}/likes`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({}),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setLikeCount((prev) => prev + 1);
+          setLiked(true);
+        })
+        .catch((err) => {
+          console.error("Error toggling like:", err);
+        });
+    } else {
+      fetch(`${backendUrl}/comments/${comment.id}/likes`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setLikeCount((prev) => prev - 1);
+          setLiked(false);
+        })
+        .catch((err) => {
+          console.error("Error toggling like:", err);
+        });
     }
   };
 
-  const handleReplySubmit = async (e) => {
+  const handleReplySubmit = (e) => {
     e.preventDefault();
     if (!replyContent.trim()) return;
 
-    try {
-      const res = await axios.post('/replies', {
+    fetch('/replies', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
         parent_id: comment.id,
         content: replyContent,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setReplies([...replies, data]);
+        setReplyContent('');
+        setReplyInputVisible(false);
+      })
+      .catch((err) => {
+        console.error("Error posting reply:", err);
       });
-      setReplies([...replies, res.data]);
-      setReplyContent('');
-      setReplyInputVisible(false);
-    } catch (err) {
-      console.error("Error posting reply:", err);
-    }
   };
 
-  const handleDeleteComment = async () => {
+  const handleDeleteComment = () => {
     if (window.confirm("Are you sure you want to delete this comment?")) {
-      try {
-        await axios.delete(`/comments/${comment.id}`);
-        // Optional: remove from UI (if managing in parent component)
-      } catch (err) {
-        console.error("Error deleting comment:", err);
-      }
+      fetch(`/comments/${comment.id}`, {
+        method: 'DELETE',
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          // Optional: remove from UI (if managing in parent component)
+        })
+        .catch((err) => {
+          console.error("Error deleting comment:", err);
+        });
     }
   };
-  
 
   return (
     <div className="mb-4">
       <div className="flex justify-between items-start">
         <div>
-          <p className="text-sm font-semibold">{comment.user.username}</p>
+          <p className="text-sm font-semibold">{comment.user.name}</p>
           <p className="text-base">{comment.content}</p>
         </div>
         <div className="text-red-500 cursor-pointer" onClick={handleLikeToggle}>
@@ -78,24 +134,23 @@ const CommentItem = ({ comment, currentUser }) => {
 
       {showReplies && (
         <ReplyList replies={replies} />
-        )}
+      )}
 
-        {replyInputVisible && (
+      {replyInputVisible && (
         <ReplyForm
-            commentId={comment.id}
-            onReplyAdded={(newReply) => setReplies(prev => [...prev, newReply])}
+          commentId={comment.id}
+          onReplyAdded={(newReply) => setReplies(prev => [...prev, newReply])}
         />
-        )}
+      )}
 
-        {currentUser?.id === comment.user.id && (
+      {currentUser?.id === comment.user.id && (
         <button
-            className="text-red-500 text-sm ml-2"
-            onClick={handleDeleteComment}
+          className="text-red-500 text-sm ml-2"
+          onClick={handleDeleteComment}
         >
-            Delete
+          Delete
         </button>
-        )}
-
+      )}
     </div>
   );
 };

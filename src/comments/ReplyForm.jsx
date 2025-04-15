@@ -1,28 +1,42 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+
+const backendUrl = "http://127.0.0.1:5000"; // Adjust if needed
 
 const ReplyForm = ({ commentId, onReplyAdded }) => {
   const [replyContent, setReplyContent] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleReplySubmit = async (e) => {
+  const handleReplySubmit = (e) => {
     e.preventDefault();
     if (!replyContent.trim()) return;
 
     setLoading(true);
-    try {
-      const res = await axios.post('/replies', {
-        parent_id: commentId,
+    fetch(`${backendUrl}/comments/${commentId}/replies`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+      body: JSON.stringify({
         content: replyContent,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to post reply");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        onReplyAdded(data);
+        setReplyContent('');
+      })
+      .catch((err) => {
+        console.error("Error posting reply:", err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
-
-      onReplyAdded(res.data); // Notify parent to update replies
-      setReplyContent('');
-    } catch (err) {
-      console.error("Error posting reply:", err);
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
