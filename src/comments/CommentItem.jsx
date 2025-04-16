@@ -16,6 +16,7 @@ const CommentItem = ({ comment, currentUser }) => {
   // Fetch initial like status when the component mounts
   useEffect(() => {
     if (currentUser) {
+      console.log("Fetching like status for comment", comment.id);
       fetch(`${backendUrl}/comments/${comment.id}/likes`, {
         method: 'GET',
         headers: {
@@ -24,15 +25,15 @@ const CommentItem = ({ comment, currentUser }) => {
       })
         .then((res) => res.json())
         .then((data) => {
-          if (data.liked) {
-            setLiked(true);
-          }
+          console.log("Like status data:", data); // <-- See what comes in!
+          setLiked(data.liked);
+          setLikeCount(data.likes_count);
         })
         .catch((err) => {
           console.error("Error fetching like status:", err);
         });
     }
-  }, [comment.id, currentUser]);
+  }, [comment.id, currentUser]);  
 
   const handleLikeToggle = () => {
     const token = localStorage.getItem("access_token");
