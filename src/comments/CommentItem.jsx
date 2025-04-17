@@ -73,30 +73,30 @@ const CommentItem = ({ comment, currentUser }) => {
     }
   };
 
-  const handleReplySubmit = (e) => {
-    e.preventDefault();
-    if (!replyContent.trim()) return;
+  // const handleReplySubmit = (e) => {
+  //   e.preventDefault();
+  //   if (!replyContent.trim()) return;
 
-    fetch('/replies', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        parent_id: comment.id,
-        content: replyContent,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setReplies([...replies, data]);
-        setReplyContent('');
-        setReplyInputVisible(false);
-      })
-      .catch((err) => {
-        console.error("Error posting reply:", err);
-      });
-  };
+  //   fetch('/replies', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       parent_id: comment.id,
+  //       content: replyContent,
+  //     }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setReplies([...replies, data]);
+  //       setReplyContent('');
+  //       setReplyInputVisible(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error("Error posting reply:", err);
+  //     });
+  // };
 
   const handleDeleteComment = () => {
     if (window.confirm("Are you sure you want to delete this comment?")) {
