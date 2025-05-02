@@ -8,11 +8,25 @@ function CommentSection({ productId, currentUser }) {
   const backendUrl = "http://127.0.0.1:5000";  // Your backend URL
 
   useEffect(() => {
-    // Fetch comments for a specific product using the correct URL structure
     fetch(`${backendUrl}/comments/product/${productId}`)
-      .then((res) => res.json())  // Convert response to JSON
-      .then((data) => setComments(data))  // Set the comments state
-      .catch((err) => console.error("Failed to fetch comments", err));
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch comments");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setComments(data);
+        } else {
+          console.error("Unexpected response:", data);
+          setComments([]); // fallback
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch comments", err);
+        setComments([]); // ensure safe fallback
+      });
   }, [productId]);
 
   const handlePostComment = (e) => {
