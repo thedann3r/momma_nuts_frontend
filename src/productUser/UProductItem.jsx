@@ -1,12 +1,51 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import CommentSection from "../comments/CommentSection";
 
-const url = "http://127.0.0.1:5000";
+const backendUrl = "http://127.0.0.1:5000";
 
 function UProductItem({ id, name, image, description, price, stock }) {
   const [loading, setLoading] = useState(false);
-  const [showCommentSection, setShowCommentSection] = useState(false);  // Track comment section visibility
+  const [showCommentSection, setShowCommentSection] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(0);
   const token = localStorage.getItem("access_token");
+
+  useEffect(() => {
+    if (token) {
+      fetch(`${backendUrl}/products/${id}/likes`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setLiked(data.liked);
+          setLikesCount(data.likes_count);
+        })
+        .catch((err) => console.error("Error checking like status:", err));
+    }
+  }, [id, token]);
+
+  const handleLikeToggle = () => {
+    if (!token) return;
+    const method = liked ? "DELETE" : "POST";
+
+    fetch(`${backendUrl}/products/${id}/likes`, {
+      method,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setLiked(!liked);
+        setLikesCount((prev) => (liked ? prev - 1 : prev + 1));
+      })
+      .catch((err) => console.error("Error toggling like:", err));
+  };
 
   const handleAddToCart = () => {
     if (!token) {
@@ -16,29 +55,25 @@ function UProductItem({ id, name, image, description, price, stock }) {
 
     setLoading(true);
 
-    fetch(`${url}/cart`, {
+    fetch(`${backendUrl}/cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ product_id: id, quantity: 1 }), // Default quantity = 1
+      body: JSON.stringify({ product_id: id, quantity: 1 }),
     })
       .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to add to cart");
-        }
+        if (!res.ok) throw new Error("Failed to add to cart");
         return res.json();
       })
-      .then(() => {
-        alert(`${name} added to cart!`);
-      })
+      .then(() => alert(`${name} added to cart!`))
       .catch((err) => console.error("Error adding to cart:", err))
       .finally(() => setLoading(false));
   };
 
   const toggleCommentSection = () => {
-    setShowCommentSection(prev => !prev);  // Toggle the visibility of the comment section
+    setShowCommentSection((prev) => !prev);
   };
 
   return (
@@ -50,25 +85,20 @@ function UProductItem({ id, name, image, description, price, stock }) {
         <h3 className="product-price">Price: ${price}</h3>
         <h3 className="product-stock">Stock: {stock} available</h3>
         <div className="product-buttons">
-          <button
-            className="add-to-cart-btn"
-            onClick={handleAddToCart}
-            disabled={loading}
-          >
+          <button className="add-to-cart-btn" onClick={handleAddToCart} disabled={loading}>
             {loading ? "Adding..." : "Add to Cart"}
           </button>
-          
-          {/* Add comment button */}
-          <button 
-            className="comment-btn"
-            onClick={toggleCommentSection}
-          >
+
+          <button className="comment-btn" onClick={toggleCommentSection}>
             {showCommentSection ? "Hide Comments" : "Comment"}
+          </button>
+
+          <button onClick={handleLikeToggle} className="like-btn">
+            {liked ? <FaHeart color="red" /> : <FaRegHeart />} {likesCount}
           </button>
         </div>
       </div>
 
-      {/* Conditionally show the comment section */}
       {showCommentSection && (
         <div className="comment-section">
           <h3>Comments</h3>

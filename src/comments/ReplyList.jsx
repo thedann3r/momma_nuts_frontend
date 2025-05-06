@@ -21,7 +21,7 @@ const ReplyList = ({ replies, setReplies, currentUser, parentCommentId }) => {
     <div className="ml-4 mt-2 border-l-2 border-gray-200 pl-4">
       {replies.map((reply) => (
         <div key={reply.id} className="mb-2">
-          <p className="text-sm font-semibold">{reply.user.username}</p>
+          <p className="text-sm font-semibold">{reply.user.name}</p>
           <p className="text-base">{reply.content}</p>
           {currentUser?.id === reply.user.id && (
             <button
