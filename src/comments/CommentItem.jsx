@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import ReplyList from './ReplyList';
 import ReplyForm from './ReplyForm';
 
+const URL = "http://127.0.0.1:5000"
+
 const CommentItem = ({ comment, currentUser }) => {
   const [showReplies, setShowReplies] = useState(false);
   const [replyInputVisible, setReplyInputVisible] = useState(false);
@@ -9,18 +11,31 @@ const CommentItem = ({ comment, currentUser }) => {
 
   const handleDeleteComment = () => {
     if (window.confirm("Are you sure you want to delete this comment?")) {
-      fetch(`/comments/${comment.id}`, {
+      fetch(`${URL}/comments/${comment.id}`, {
         method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
       })
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) {
+            return res.json().then(err => {
+              throw new Error(err.message || 'Failed to delete');
+            });
+          }
+          return res.text().then(text => {
+            return text ? JSON.parse(text) : {};
+          });
+        })
         .then(() => {
           // Optionally update parent state if needed
+          console.log("Comment deleted successfully");
         })
         .catch((err) => {
-          console.error("Error deleting comment:", err);
+          console.error("Error deleting comment:", err.message);
         });
     }
-  };
+  };  
 
   return (
     <div className="mb-4">
