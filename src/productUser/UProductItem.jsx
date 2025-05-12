@@ -10,6 +10,7 @@ function UProductItem({ id, name, image, description, price, stock }) {
   const [liked, setLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
   const token = localStorage.getItem("access_token");
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     if (token) {
@@ -27,6 +28,23 @@ function UProductItem({ id, name, image, description, price, stock }) {
         .catch((err) => console.error("Error checking like status:", err));
     }
   }, [id, token]);
+
+  useEffect(() => {
+    if (token) {
+      fetch(`${backendUrl}/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch user");
+          return res.json();
+        })
+        .then((data) => setCurrentUser(data))
+        .catch((err) => console.error("Error fetching current user:", err));
+    }
+  }, [token]);
+  
 
   const handleLikeToggle = () => {
     if (!token) return;
@@ -99,10 +117,10 @@ function UProductItem({ id, name, image, description, price, stock }) {
         </div>
       </div>
 
-      {showCommentSection && (
+      {showCommentSection && currentUser && (
         <div className="comment-section">
           <h3>Comments</h3>
-          <CommentSection productId={id} />
+          <CommentSection productId={id} currentUser={currentUser} />
         </div>
       )}
     </div>

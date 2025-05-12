@@ -7,6 +7,9 @@ function CommentSection({ productId, currentUser }) {
 
   const backendUrl = "http://127.0.0.1:5000";  // Your backend URL
 
+  console.log("CommentSection currentUser:", currentUser);
+
+
   useEffect(() => {
     fetch(`${backendUrl}/comments/product/${productId}`)
       .then((res) => {
@@ -61,6 +64,9 @@ function CommentSection({ productId, currentUser }) {
             key={comment.id}
             comment={comment}
             currentUser={currentUser}
+            onDelete={(id) =>
+              setComments((prevComments) => prevComments.filter((c) => c.id !== id))
+            }
           />
         ))}
       </div>

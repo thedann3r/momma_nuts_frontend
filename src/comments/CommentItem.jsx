@@ -4,7 +4,7 @@ import ReplyForm from './ReplyForm';
 
 const URL = "http://127.0.0.1:5000"
 
-const CommentItem = ({ comment, currentUser }) => {
+const CommentItem = ({ comment, currentUser, onDelete }) => {
   const [showReplies, setShowReplies] = useState(false);
   const [replyInputVisible, setReplyInputVisible] = useState(false);
   const [replies, setReplies] = useState(comment.replies || []);
@@ -20,6 +20,9 @@ const CommentItem = ({ comment, currentUser }) => {
         .then((res) => {
           if (!res.ok) {
             return res.json().then(err => {
+              if (res.status === 403) {
+                alert("You are not authorized to delete this comment.");
+              }
               throw new Error(err.message || 'Failed to delete');
             });
           }
@@ -28,14 +31,19 @@ const CommentItem = ({ comment, currentUser }) => {
           });
         })
         .then(() => {
-          // Optionally update parent state if needed
           console.log("Comment deleted successfully");
+          if (onDelete) {
+            onDelete(comment.id); // Notify parent to remove this comment
+          }
         })
         .catch((err) => {
           console.error("Error deleting comment:", err.message);
         });
     }
   };  
+  
+const isCommentOwner = currentUser?.id === comment.user.id;
+console.log("currentUser.id:", currentUser?.id, "comment.user.id:", comment.user?.id);
 
   return (
     <div className="mb-4">
@@ -62,14 +70,14 @@ const CommentItem = ({ comment, currentUser }) => {
         />
       )}
 
-      {currentUser?.id === comment.user.id && (
-        <button
-          className="text-red-500 text-sm ml-2"
-          onClick={handleDeleteComment}
-        >
-          Delete
-        </button>
-      )}
+
+<button
+  className={`text-sm ml-2 ${isCommentOwner ? 'text-red-500' : 'text-gray-400 cursor-not-allowed'}`}
+  onClick={handleDeleteComment}
+  disabled={!isCommentOwner}
+>
+  Delete
+</button>
     </div>
   );
 };
