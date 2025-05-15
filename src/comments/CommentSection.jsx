@@ -7,7 +7,7 @@ function CommentSection({ productId, currentUser }) {
 
   const backendUrl = "http://127.0.0.1:5000";  // Your backend URL
 
-  console.log("CommentSection currentUser:", currentUser);
+  // console.log("CommentSection currentUser:", currentUser);
 
 
   useEffect(() => {

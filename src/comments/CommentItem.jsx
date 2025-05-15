@@ -43,7 +43,7 @@ const CommentItem = ({ comment, currentUser, onDelete }) => {
   };  
   
 const isCommentOwner = currentUser?.id === comment.user.id;
-console.log("currentUser.id:", currentUser?.id, "comment.user.id:", comment.user?.id);
+// console.log("currentUser.id:", currentUser?.id, "comment.user.id:", comment.user?.id);
 
   return (
     <div className="mb-4">
@@ -61,7 +61,15 @@ console.log("currentUser.id:", currentUser?.id, "comment.user.id:", comment.user
         <button onClick={() => setReplyInputVisible(prev => !prev)}>Reply</button>
       </div>
 
-      {showReplies && <ReplyList replies={replies} />}
+      {/* {showReplies && <ReplyList replies={replies} />} */}
+      {showReplies && (
+        <ReplyList
+          replies={replies}
+          setReplies={setReplies}
+          currentUser={currentUser}
+          parentCommentId={comment.id}
+        />
+      )}
 
       {replyInputVisible && (
         <ReplyForm

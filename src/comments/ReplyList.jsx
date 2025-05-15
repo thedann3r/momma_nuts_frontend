@@ -1,19 +1,36 @@
 import React from "react";
-import axios from "axios";
+
+const URL = "http://127.0.0.1:5000"; // Or use your env-based backend URL
 
 const ReplyList = ({ replies, setReplies, currentUser, parentCommentId }) => {
   if (!replies || replies.length === 0) {
     return <p className="text-sm text-gray-400 ml-4">No replies yet.</p>;
   }
 
-  const handleDeleteReply = async (replyId) => {
+  const handleDeleteReply = (replyId) => {
     if (window.confirm("Delete this reply?")) {
-      try {
-        await axios.delete(`/comments/${parentCommentId}/replies/${replyId}`);
-        setReplies((prevReplies) => prevReplies.filter((r) => r.id !== replyId));
-      } catch (err) {
-        console.error("Error deleting reply:", err);
-      }
+      fetch(`${URL}/comments/${parentCommentId}/replies/${replyId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+        .then((res) => {
+          if (!res.ok) {
+            return res.json().then((err) => {
+              throw new Error(err.message || "Failed to delete reply");
+            });
+          }
+          return res.text(); // assuming response is empty
+        })
+        .then(() => {
+          setReplies((prevReplies) =>
+            prevReplies.filter((r) => r.id !== replyId)
+          );
+        })
+        .catch((err) => {
+          console.error("Error deleting reply:", err.message);
+        });
     }
   };
 
@@ -23,14 +40,17 @@ const ReplyList = ({ replies, setReplies, currentUser, parentCommentId }) => {
         <div key={reply.id} className="mb-2">
           <p className="text-sm font-semibold">{reply.user.name}</p>
           <p className="text-base">{reply.content}</p>
-          {currentUser?.id === reply.user.id && (
-            <button
-              className="text-red-500 text-xs ml-2"
-              onClick={() => handleDeleteReply(reply.id)}
-            >
-              Delete
-            </button>
-          )}
+          <button
+            className={`text-xs ml-2 ${
+              currentUser?.id === reply.user.id
+                ? "text-red-500"
+                : "text-gray-400 cursor-not-allowed"
+            }`}
+            onClick={() => handleDeleteReply(reply.id)}
+            disabled={currentUser?.id !== reply.user.id}
+          >
+            Delete
+          </button>
         </div>
       ))}
     </div>
