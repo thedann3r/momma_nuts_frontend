@@ -10,37 +10,35 @@ const CommentItem = ({ comment, currentUser, onDelete }) => {
   const [replies, setReplies] = useState(comment.replies || []);
 
   const handleDeleteComment = () => {
-    if (window.confirm("Are you sure you want to delete this comment?")) {
-      fetch(`${URL}/comments/${comment.id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      })
-        .then((res) => {
-          if (!res.ok) {
-            return res.json().then(err => {
-              if (res.status === 403) {
-                alert("You are not authorized to delete this comment.");
-              }
-              throw new Error(err.message || 'Failed to delete');
-            });
+  if (!window.confirm("Are you sure you want to delete this comment?")) return;
+
+  fetch(`${URL}/comments/${comment.id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        return res.json().then(err => {
+          if (res.status === 403) {
+            alert("You are not authorized to delete this comment.");
           }
-          return res.text().then(text => {
-            return text ? JSON.parse(text) : {};
-          });
-        })
-        .then(() => {
-          console.log("Comment deleted successfully");
-          if (onDelete) {
-            onDelete(comment.id); // Notify parent to remove this comment
-          }
-        })
-        .catch((err) => {
-          console.error("Error deleting comment:", err.message);
+          throw new Error(err.message || 'Failed to delete comment');
         });
-    }
-  };  
+      }
+      return res.text().then(text => (text ? JSON.parse(text) : {}));
+    })
+    .then(() => {
+      console.log("Comment soft-deleted successfully");
+      if (onDelete) {
+        onDelete(comment.id); // Remove from UI (assumes parent filters out)
+      }
+    })
+    .catch((err) => {
+      console.error("Error deleting comment:", err.message);
+    });
+};
   
 const isCommentOwner = currentUser?.id === comment.user.id;
 // console.log("currentUser.id:", currentUser?.id, "comment.user.id:", comment.user?.id);

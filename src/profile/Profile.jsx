@@ -74,36 +74,36 @@ function Profile() {
   };
 
   const handleDelete = () => {
-    if (!window.confirm("Are you sure you want to delete your account? This action cannot be undone!")) {
-      return;
-    }
-  
-    const token = localStorage.getItem("access_token");
-  
-    fetch(`${url}/delete`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({user_id:user.id}) // optional: include { user_id: user.id } if admin
+  if (!window.confirm("Are you sure you want to delete your account? This action cannot be undone!")) {
+    return;
+  }
+
+  const token = localStorage.getItem("access_token");
+
+  fetch(`${url}/delete`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    // Only include body if your backend requires user_id (e.g., for admin-deleting other users)
+    // body: JSON.stringify({ user_id: user.id })
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to delete account");
+      return res.json();
     })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to delete account");
-        return res.json();
-      })
-      .then((data) => {
-        alert("Account deleted successfully!");
-        localStorage.removeItem("user");
-        localStorage.removeItem("access_token");
-        navigate("/login");
-      })
-      .catch((error) => {
-        console.error("Delete error:", error.message);
-        alert(error.message || "Something went wrong. Please try again.");
-      });
-  };
-  
+    .then(() => {
+      alert("Account soft-deleted successfully!");
+      localStorage.removeItem("user");
+      localStorage.removeItem("access_token");
+      navigate("/login");
+    })
+    .catch((error) => {
+      console.error("Delete error:", error.message);
+      alert(error.message || "Something went wrong. Please try again.");
+    });
+};
 
   return (
     <div className="profile-container">

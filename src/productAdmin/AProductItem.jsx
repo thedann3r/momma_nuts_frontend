@@ -104,10 +104,11 @@ function AProductItem({ name, image, id, description, price, stock, setProduct, 
         return res.json();
       })
       .then(() => {
-        let remainder = product.filter(prod => prod.id !== id);
-        setProduct(remainder);
-        alert(`${name} has been deleted successfully! 👋🏽`);
-      })
+      // 👇 Remove the soft-deleted product from local state/UI
+      let remainder = product.filter(prod => prod.id !== id);
+      setProduct(remainder);
+      alert(`${name} has been soft-deleted successfully! 👋🏽`);
+    })
       .catch(err => console.error("Error deleting product:", err));
   }
 

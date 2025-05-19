@@ -8,31 +8,31 @@ const ReplyList = ({ replies, setReplies, currentUser, parentCommentId }) => {
   }
 
   const handleDeleteReply = (replyId) => {
-    if (window.confirm("Delete this reply?")) {
-      fetch(`${URL}/comments/${parentCommentId}/replies/${replyId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      })
-        .then((res) => {
-          if (!res.ok) {
-            return res.json().then((err) => {
-              throw new Error(err.message || "Failed to delete reply");
-            });
-          }
-          return res.text(); // assuming response is empty
-        })
-        .then(() => {
-          setReplies((prevReplies) =>
-            prevReplies.filter((r) => r.id !== replyId)
-          );
-        })
-        .catch((err) => {
-          console.error("Error deleting reply:", err.message);
+  if (!window.confirm("Are you sure you want to delete this reply?")) return;
+
+  fetch(`${URL}/comments/${parentCommentId}/replies/${replyId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        return res.json().then((err) => {
+          throw new Error(err.message || "Failed to delete reply");
         });
-    }
-  };
+      }
+      return res.text(); // Assume empty response
+    })
+    .then(() => {
+      setReplies((prevReplies) =>
+        prevReplies.filter((r) => r.id !== replyId)
+      );
+    })
+    .catch((err) => {
+      console.error("Error deleting reply:", err.message);
+    });
+};
 
   return (
     <div className="ml-4 mt-2 border-l-2 border-gray-200 pl-4">
