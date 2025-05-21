@@ -22,8 +22,9 @@ function LoginForm() {
             });
     
             if (!response.ok) {
-                alert("Invalid credentials");
-                throw new Error('Invalid credentials');
+                const errorData = await response.json();
+                alert(errorData.error || "Invalid credentials");
+                return; // prevent further execution
             }
     
             const data = await response.json();
