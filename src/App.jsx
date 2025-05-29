@@ -13,6 +13,8 @@ import CartPage from "./cart/Cart"
 import Mpesa from "./mpesa/Mpesa"
 import Profile from "./profile/Profile"
 import Logout from "./authorization/Logout"
+import ResetPassword from "./authorization/ResetPassword"
+import ForgotPassword from "./authorization/ForgotPassword"
   
 function App(){
   return(
@@ -30,6 +32,8 @@ function App(){
         <Route path="/mpesa" element={<Mpesa />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
       </Routes>
     </Router>
   )
