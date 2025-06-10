@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaRegComment } from "react-icons/fa";
 import CommentSection from "../comments/CommentSection";
 
 const backendUrl = "http://127.0.0.1:5000";
 
-function UProductItem({ id, name, image, description, price, stock }) {
+function UProductItem({ id, name, image, description, price, stock, nameColor, descColor, bgColor}) {
   const [loading, setLoading] = useState(false);
   const [showCommentSection, setShowCommentSection] = useState(false);
   const [liked, setLiked] = useState(false);
@@ -95,34 +95,40 @@ function UProductItem({ id, name, image, description, price, stock }) {
   };
 
   return (
-    <div className="product-card">
-      <img className="product-image" src={image} alt={name} />
-      <div className="product-info">
-        <h2 className="product-name">{name}</h2>
-        <p className="product-description">{description}</p>
-        <h3 className="product-price">Price: ${price}</h3>
-        <h3 className="product-stock">Stock: {stock} available</h3>
-        <div className="product-buttons">
-          <button className="add-to-cart-btn" onClick={handleAddToCart} disabled={loading}>
-            {loading ? "Adding..." : "Add to Cart"}
-          </button>
+        <div className="product-card" style={{ backgroundColor: bgColor }}>
+          <div className="product-left">
+            <h2 className="product-name" style={{ color: nameColor }}>{name}</h2>
+            <p className="product-description" style={{ color: descColor }}>{description}</p>
+            <h3 className="product-stock">Stock: {stock} available</h3>
+            <h3 className="product-price">Price: ${price}</h3>
+            <button className="add-to-cart-btn" onClick={handleAddToCart} disabled={loading}>
+              {loading ? "Adding..." : "Add to Cart"}
+            </button>
+          </div>
 
-          <button className="comment-btn" onClick={toggleCommentSection}>
-            {showCommentSection ? "Hide Comments" : "Comment"}
-          </button>
+          <div className="product-right">
+            <img className="product-image" src={image} alt={name} />
+            <div className="product-buttons flex items-center gap-4">
+              <button onClick={handleLikeToggle} className="like-btn flex items-center">
+                {liked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
+                <span className="ml-1 text-sm">{likesCount}</span>
+              </button>
 
-          <button onClick={handleLikeToggle} className="like-btn">
-            {liked ? <FaHeart color="red" /> : <FaRegHeart />} {likesCount}
-          </button>
-        </div>
-      </div>
+              <button onClick={toggleCommentSection} className="comment-icon-btn relative">
+                <FaRegComment />
+                <span className="ml-2 text-sm">
+                  {showCommentSection ? " " : " "}
+                </span>
+              </button>
+            </div>
+          </div>
 
-      {showCommentSection && currentUser && (
-        <div className="comment-section">
-          <h3>Comments</h3>
-          <CommentSection productId={id} currentUser={currentUser} />
-        </div>
-      )}
+          {showCommentSection && currentUser && (
+            <div className="comment-section">
+              <h3>Comments</h3>
+              <CommentSection productId={id} currentUser={currentUser} />
+            </div>
+          )}
     </div>
   );
 }
