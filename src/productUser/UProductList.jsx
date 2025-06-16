@@ -2,8 +2,8 @@ import UProductItem from "./UProductItem";
 
 function UProductList({ product = [], setProduct }) {
     const colorPairs = [
-            { nameColor: "#FF3CB0", descColor: "#F7941D", bgColor: "#FFF0E6" },
-            { nameColor: "#F1531C", descColor: "#F7A720", bgColor: "#FFF5EA" },
+            { nameColor: "#FF3CB0", descColor: "#F7941D", bgColor: "green" },
+            { nameColor: "#F1531C", descColor: "#F7A720", bgColor: "pink" },
             { nameColor: "#4B1E0E", descColor: "#FF3CB0", bgColor: "#FDECEC" },
             { nameColor: "#F7A720", descColor: "#4B1E0E", bgColor: "#FFF8E1" },
             { nameColor: "#F7941D", descColor: "#F1531C", bgColor: "#FFEEDD" }

@@ -77,7 +77,7 @@ function LoginForm() {
                     </form>
                     <p className="signupFooter">Don't have an account? <a href="/signup">Sign up</a></p>
                 </div>
-            </div>
+            </div> 
         </div>
     );
 }

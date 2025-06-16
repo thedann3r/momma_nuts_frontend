@@ -15,25 +15,30 @@ import Profile from "./profile/Profile"
 import Logout from "./authorization/Logout"
 import ResetPassword from "./authorization/ResetPassword"
 import ForgotPassword from "./authorization/ForgotPassword"
+
+import MainLayout from "./MainLayout"
   
 function App(){
   return(
     <Router>
       <Routes>
+         {/* No navbar */}
         <Route path="/authorization" element={<Authorization />} />
-        <Route path="/admin-products" element={<AProduct />} />
-        <Route path="/user-products" element={<UProduct />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/order-items/:orderId" element={<OrderItems />} />
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/payments" element={<Payment />} />
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/mpesa" element={<Mpesa />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/logout" element={<Logout />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+
+        {/* With navbar */}
+        <Route path="/admin-products" element={<MainLayout><AProduct /></MainLayout>} />
+        <Route path="/user-products" element={<MainLayout><UProduct /></MainLayout>} />
+        <Route path="/orders" element={<MainLayout><Orders /></MainLayout>} />
+        <Route path="/order-items/:orderId" element={<MainLayout><OrderItems /></MainLayout>} />
+        <Route path="/payments" element={<MainLayout><Payment /></MainLayout>} />
+        <Route path="/cart" element={<MainLayout><CartPage /></MainLayout>} />
+        <Route path="/mpesa" element={<MainLayout><Mpesa /></MainLayout>} />
+        <Route path="/profile" element={<MainLayout><Profile /></MainLayout>} />
+        <Route path="/logout" element={<MainLayout><Logout /></MainLayout>} />
       </Routes>
     </Router>
   )

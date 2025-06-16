@@ -1,0 +1,107 @@
+/* Full Page Styling */
+.signupContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  /* background-color: #f8f9fd; */
+}
+
+/* Card Container */
+.signupCard {
+  display: flex;
+  width: 800px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+/* Left Side - Image Section */
+.signupLeft {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+}
+
+/* Placeholder for image */
+.signupImagePlaceholder {
+  width: 80%;
+  height: 80%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: white;
+  border-radius: 10px;
+}
+
+/* Right Side - Form Section */
+.signupRight {
+  width: 50%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Form Inputs */
+.signupForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.signupInput {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Button Styling */
+.signupButton {
+  width: 100%;
+  padding: 12px;
+  background-color: #6e8efb;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.signupButton:hover {
+  background-color: #1f46bb;
+}
+
+/* Footer Text */
+.signupFooter {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+  color: black;
+}
+
+.signupFooter a {
+  color: #6e8efb;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signupFooter a:hover {
+  text-decoration: underline;
+}
+/* Contact */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+}

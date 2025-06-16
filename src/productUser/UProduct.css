@@ -72,12 +72,22 @@
 }
 
 .comment-btn, .like-btn {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: none;
+  all: unset;
   cursor: pointer;
-  background-color: transparent;
-  color: white;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: inherit;
+  padding: 5px;
+}
+
+.comment-icon-btn {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px;
 }
 
 /* Comment section */

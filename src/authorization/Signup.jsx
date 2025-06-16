@@ -76,9 +76,9 @@ function SignupForm() {
         <div className="signupContainer">
             <div className="signupCard">
                 <div className="signupLeft">
-                    {/* <div className="signupImagePlaceholder">
+                    <div className="signupImagePlaceholder">
                         <img src="https://cdn.create.vista.com/api/media/small/426382906/stock-photo-hostel-dormitory-beds-arranged-in-room" alt="signup" />
-                    </div> */}
+                    </div>
                 </div>
                 <div className="signupRight">
                     <h2>Create an Account</h2>
@@ -93,7 +93,7 @@ function SignupForm() {
                     <p className="signupFooter">Already have an account? <a href="/login">Log in</a></p>
                 </div>
             </div>
-        </div>
+        </div> 
     );
 }
 

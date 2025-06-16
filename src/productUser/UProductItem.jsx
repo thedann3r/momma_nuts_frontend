@@ -109,7 +109,7 @@ function UProductItem({ id, name, image, description, price, stock, nameColor, d
           <div className="product-right">
             <img className="product-image" src={image} alt={name} />
             <div className="product-buttons flex items-center gap-4">
-              <button onClick={handleLikeToggle} className="like-btn flex items-center">
+              <button onClick={handleLikeToggle} className="like-btn">
                 {liked ? <FaHeart className="text-red-500" /> : <FaRegHeart />}
                 <span className="ml-1 text-sm">{likesCount}</span>
               </button>
