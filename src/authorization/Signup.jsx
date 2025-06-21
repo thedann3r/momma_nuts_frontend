@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import peanut from '../assets/peanutimage.png'
 
 const url = "http://127.0.0.1:5000";
 
@@ -77,20 +78,24 @@ function SignupForm() {
             <div className="signupCard">
                 <div className="signupLeft">
                     <div className="signupImagePlaceholder">
-                        <img src="https://cdn.create.vista.com/api/media/small/426382906/stock-photo-hostel-dormitory-beds-arranged-in-room" alt="signup" />
+                        {/* <img src="https://cdn.create.vista.com/api/media/small/426382906/stock-photo-hostel-dormitory-beds-arranged-in-room" alt="signup" /> */}
+                        <img src={peanut} alt="momma nut" />
                     </div>
                 </div>
                 <div className="signupRight">
-                    <h2>Create an Account</h2>
                     <form className="signupForm" onSubmit={handleSignup}>
+
+                    <h2>Create an Account</h2>
+
                         <input className="signupInput" type="text" name="name" placeholder="Enter name..." required />
                         <input className="signupInput" type="email" name="email" placeholder="Enter email..." required />
                         <input className="signupInput" type="text" name="phone" placeholder="Enter phone number..." required />
                         <input className="signupInput" type="password" name="password" placeholder="Enter password..." required />
                         <input className="signupInput" type="password" name="confirm_password" placeholder="Confirm password..." required />
                         <button className="signupButton" type="submit">Sign Up</button>
-                    </form>
+
                     <p className="signupFooter">Already have an account? <a href="/login">Log in</a></p>
+                    </form>
                 </div>
             </div>
         </div> 
