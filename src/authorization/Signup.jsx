@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import peanut from '../assets/peanutimage.png'
+import momma from '../assets/mommanut.png'
 
 const url = "http://127.0.0.1:5000";
 
@@ -79,7 +80,7 @@ function SignupForm() {
                 <div className="signupLeft">
                     <div className="signupImagePlaceholder">
                         {/* <img src="https://cdn.create.vista.com/api/media/small/426382906/stock-photo-hostel-dormitory-beds-arranged-in-room" alt="signup" /> */}
-                        <img src={peanut} alt="momma nut" />
+                        <img src={momma} alt="momma nut" />
                     </div>
                 </div>
                 <div className="signupRight">

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import momma from "../assets/mommanut.png"
 
 const url = "http://127.0.0.1:5000";
 
@@ -37,21 +38,35 @@ function ForgotPassword() {
 
     return (
         <div className="signupContainer">
+
             <div className="signupCard">
-                <h2>Forgot Password</h2>
-                <form onSubmit={handleSubmit} className="signupForm">
-                    <input
-                        className="signupInput"
-                        type="email"
-                        placeholder="Enter your email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <button className="signupButton" type="submit" disabled={loading}>
-                        {loading ? "Sending..." : "Send Reset Link"}
-                    </button>
-                </form>
+                <div className="signupLeft">
+                    <div className="signupImagePlaceholder">
+                        <img src={momma} alt="momma nut" />
+                        {/* <img src="https://cdn.create.vista.com/api/media/small/426382906/stock-photo-hostel-dormitory-beds-arranged-in-room" alt="signup" /> */}
+                    </div>
+                </div>
+
+                <div className="signupRight">
+                    <form className="signupForm" onSubmit={handleSubmit}>
+
+                    <h2>Forgot Password</h2>
+
+                        <input
+                            className="signupInput"
+                            type="email"
+                            placeholder="Enter your email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        /> 
+
+                        <button className="signupButton" type="submit" disabled={loading}>
+                            {loading ? "Sending..." : "Send Reset Link"}
+                        </button>
+
+                    </form>
+                </div>
                 {message && <p className="text-green-600">{message}</p>}
                 {error && <p className="text-red-600">{error}</p>}
             </div>

@@ -120,6 +120,7 @@ Full Page Styling
 /* The card with image left and form right */
 .signupCard {
   display: flex;
+  /* width: 100%; */
   width: 900px;
   border-radius: 16px;
   overflow: hidden;
@@ -167,7 +168,6 @@ Full Page Styling
   display: flex;
   flex-direction: column;
   gap: 15px;
-  /* border: 2px white solid; */
   padding: 15px;
   border-radius: 15px;
   background-color: #4B1E0E;

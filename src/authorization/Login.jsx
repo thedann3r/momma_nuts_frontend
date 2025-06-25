@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom"
+import momma from "../assets/mommanut.png"
 
 const url = "http://127.0.0.1:5000";
 
@@ -59,13 +60,16 @@ function LoginForm() {
         <div className="signupContainer">
             <div className="signupCard">
                 <div className="signupLeft">
-                    {/* <div className="signupImagePlaceholder">
-                        <img src="https://cdn.create.vista.com/api/media/small/426382906/stock-photo-hostel-dormitory-beds-arranged-in-room" alt="signup" />
-                    </div> */}
+                    <div className="signupImagePlaceholder">
+                        <img src={momma} alt="momma nut" />
+                        {/* <img src="https://cdn.create.vista.com/api/media/small/426382906/stock-photo-hostel-dormitory-beds-arranged-in-room" alt="signup" /> */}
+                    </div>
                 </div>
                 <div className="signupRight">
-                    <h2>Log in to your account</h2>
                     <form className="signupForm" onSubmit={handleLogin}>
+
+                    <h2>Log in to your account</h2>
+
                         <input className="signupInput" type="text" name="identifier" placeholder="Enter email or phone..." required />
                         <input className="signupInput" type="password" name="password" placeholder="Enter password..." required />
                         <div className="text-right text-sm mb-2">
@@ -73,9 +77,12 @@ function LoginForm() {
                                 Forgot Password?
                             </Link>
                         </div>
+
                         <button className="signupButton" type="submit">Log In</button>
-                    </form>
+
                     <p className="signupFooter">Don't have an account? <a href="/signup">Sign up</a></p>
+
+                    </form>
                 </div>
             </div> 
         </div>
