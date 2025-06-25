@@ -224,3 +224,30 @@ Full Page Styling
 .signupFooter a:hover {
   text-decoration: underline;
 }
+
+.passwordWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.signupInput {
+  width: 100%;
+  padding: 10px;
+  padding-right: 70px; /* 👈 Add space for the toggle button */
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* 👈 Ensure padding doesn't shrink input width */
+}
+
+.togglePassword {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 0.85rem;
+  cursor: pointer;
+}

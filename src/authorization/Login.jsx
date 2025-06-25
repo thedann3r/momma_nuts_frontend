@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Navigate } from "react-router-dom";
-import { Link } from "react-router-dom"
-import momma from "../assets/mommanut.png"
+import { Link } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import momma from "../assets/mommanut.png";
 
 const url = "http://127.0.0.1:5000";
 
 function LoginForm() {
     const [token, setToken] = useState(localStorage.getItem('access_token'));
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -18,7 +20,7 @@ function LoginForm() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    identifier: formData.get('identifier'), // Either phone or email
+                    identifier: formData.get('identifier'),
                     password: formData.get('password')
                 }),
             });
@@ -26,7 +28,7 @@ function LoginForm() {
             if (!response.ok) {
                 const errorData = await response.json();
                 alert(errorData.error || "Invalid credentials");
-                return; // prevent further execution
+                return;
             }
     
             const data = await response.json();
@@ -62,16 +64,33 @@ function LoginForm() {
                 <div className="signupLeft">
                     <div className="signupImagePlaceholder">
                         <img src={momma} alt="momma nut" />
-                        {/* <img src="https://cdn.create.vista.com/api/media/small/426382906/stock-photo-hostel-dormitory-beds-arranged-in-room" alt="signup" /> */}
                     </div>
                 </div>
                 <div className="signupRight">
                     <form className="signupForm" onSubmit={handleLogin}>
+                        <h2>Log in to your account</h2>
 
-                    <h2>Log in to your account</h2>
+                        <input
+                            className="signupInput"
+                            type="text"
+                            name="identifier"
+                            placeholder="Enter email or phone..."
+                            required
+                        />
 
-                        <input className="signupInput" type="text" name="identifier" placeholder="Enter email or phone..." required />
-                        <input className="signupInput" type="password" name="password" placeholder="Enter password..." required />
+                        <div className="passwordWrapper">
+                            <input
+                                className="signupInput"
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                placeholder="Enter password..."
+                                required
+                            />
+                            <span className="togglePassword" onClick={() => setShowPassword(!showPassword)}>
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
+
                         <div className="text-right text-sm mb-2">
                             <Link to="/forgot-password" className="text-blue-500 hover:underline">
                                 Forgot Password?
@@ -80,11 +99,10 @@ function LoginForm() {
 
                         <button className="signupButton" type="submit">Log In</button>
 
-                    <p className="signupFooter">Don't have an account? <a href="/signup">Sign up</a></p>
-
+                        <p className="signupFooter">Don't have an account? <a href="/signup">Sign up</a></p>
                     </form>
                 </div>
-            </div> 
+            </div>
         </div>
     );
 }
