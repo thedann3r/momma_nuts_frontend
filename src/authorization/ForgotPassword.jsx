@@ -61,6 +61,8 @@ function ForgotPassword() {
                             required
                         /> 
 
+                        <p className="signupFooter">Already have an account? <a href="./login">Log in</a></p>
+
                         <button className="signupButton" type="submit" disabled={loading}>
                             {loading ? "Sending..." : "Send Reset Link"}
                         </button>

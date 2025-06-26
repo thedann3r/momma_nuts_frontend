@@ -38,7 +38,7 @@ function UProductItem({ id, name, image, description, price, stock, nameColor, d
       })
         .then((res) => {
           if (!res.ok) throw new Error("Failed to fetch user");
-          return res.json();
+          return res.json(); 
         })
         .then((data) => setCurrentUser(data))
         .catch((err) => console.error("Error fetching current user:", err));

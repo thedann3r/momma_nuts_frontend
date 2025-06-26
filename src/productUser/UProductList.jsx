@@ -18,7 +18,7 @@ function UProductList({ product = [], setProduct }) {
                     <UProductItem
                         key={prod.id}
                         id={prod.id}
-                        name={prod.name}
+                        name={prod.name} 
                         description={prod.description}
                         price={prod.price}
                         image={prod.image}

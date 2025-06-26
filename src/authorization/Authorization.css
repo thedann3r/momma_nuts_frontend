@@ -233,9 +233,11 @@ Full Page Styling
 .signupInput {
   width: 100%;
   padding: 10px;
+  color: #FF3CB0;
+  background-color: #333;
   padding-right: 70px; /* 👈 Add space for the toggle button */
   margin-bottom: 15px;
-  border: 1px solid #ccc;
+  border: 2px solid #F7941D;
   border-radius: 5px;
   box-sizing: border-box; /* 👈 Ensure padding doesn't shrink input width */
 }
@@ -247,7 +249,7 @@ Full Page Styling
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: #333;
+  color: #F1531C;
   font-size: 0.85rem;
   cursor: pointer;
 }
