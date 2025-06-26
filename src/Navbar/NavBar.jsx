@@ -4,7 +4,7 @@ import "./NavBar.css";
 function NavBar() {
   return (
     <nav className="navbar">
-      <h2 className="logo">Momma Nut</h2>
+      <h3 className="logo">Momma Nut</h3>
       <ul className="nav-links">
         <li><Link to="/user-products">Products</Link></li>
         <li><Link to="/cart">Cart</Link></li>
@@ -13,7 +13,7 @@ function NavBar() {
         <li><Link to="/logout">Logout</Link></li>
       </ul>
     </nav>
-  );
+  ); 
 }
 
 export default NavBar;

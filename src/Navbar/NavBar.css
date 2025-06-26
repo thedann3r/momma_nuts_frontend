@@ -1,15 +1,24 @@
 .navbar {
+  position: fixed;
+  top: 0;                      /* Stick to top */
+  left: 0;
+  right: 0;
+  z-index: 1000;               /* Ensure it stays above other content */
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #F7941D;
   padding: 15px 30px;
+  height: 30px;
   color: white;
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
+  /* font-size: 1.5rem;
+  font-weight: bold;  */
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .nav-links {

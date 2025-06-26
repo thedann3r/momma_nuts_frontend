@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import axios from "axios";
 
-const url = "http://127.0.0.1:5000"
+const url = "http://127.0.0.1:5000";
 
 const OrderItems = () => {
   const { orderId } = useParams();
@@ -11,20 +10,20 @@ const OrderItems = () => {
   const token = localStorage.getItem("access_token");
 
   useEffect(() => {
-    const fetchOrderDetails = async () => {
-      try {
-        const response = await axios.get(`${url}/orders/${orderId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setOrder(response.data);
-      } catch (error) {
-        console.error("Error fetching order details:", error.response?.data || error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchOrderDetails();
+    fetch(`${url}/orders/${orderId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch order details");
+        return res.json();
+      })
+      .then((data) => setOrder(data))
+      .catch((error) => {
+        console.error("Error fetching order details:", error);
+      })
+      .finally(() => setLoading(false));
   }, [orderId]);
 
   if (loading) return <p>Loading order details...</p>;
@@ -50,7 +49,10 @@ const OrderItems = () => {
         ))}
       </ul>
 
-      <Link to="/orders" className="mt-4 inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+      <Link
+        to="/orders"
+        className="mt-4 inline-block bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+      >
         Back to Orders
       </Link>
     </div>
